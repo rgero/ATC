@@ -1,0 +1,35 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{9F4671F3-904A-E8F7-6E5B-258276BCDFF5}") = "Air Traffic Control", "Assembly-CSharp-firstpass.csproj", "{E64DE49F-6F0B-DD97-DCA1-53DD76656E0B}"
+EndProject
+Project("{9F4671F3-904A-E8F7-6E5B-258276BCDFF5}") = "Air Traffic Control", "Assembly-CSharp.csproj", "{3AF28E53-6C0B-6A48-E10E-0BF6F38D0486}"
+EndProject
+Project("{9F4671F3-904A-E8F7-6E5B-258276BCDFF5}") = "Air Traffic Control", "Assembly-CSharp-Editor.csproj", "{897AFED1-CFCE-2F1A-1D7E-09790B77265A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E64DE49F-6F0B-DD97-DCA1-53DD76656E0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E64DE49F-6F0B-DD97-DCA1-53DD76656E0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E64DE49F-6F0B-DD97-DCA1-53DD76656E0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E64DE49F-6F0B-DD97-DCA1-53DD76656E0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AF28E53-6C0B-6A48-E10E-0BF6F38D0486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AF28E53-6C0B-6A48-E10E-0BF6F38D0486}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AF28E53-6C0B-6A48-E10E-0BF6F38D0486}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AF28E53-6C0B-6A48-E10E-0BF6F38D0486}.Release|Any CPU.Build.0 = Release|Any CPU
+		{897AFED1-CFCE-2F1A-1D7E-09790B77265A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{897AFED1-CFCE-2F1A-1D7E-09790B77265A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{897AFED1-CFCE-2F1A-1D7E-09790B77265A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{897AFED1-CFCE-2F1A-1D7E-09790B77265A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
