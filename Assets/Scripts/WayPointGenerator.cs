@@ -6,17 +6,18 @@ public class WayPointGenerator : MonoBehaviour {
 
 	public int numberOfPoints;
 	public float radius;
-	public static Vector3 center;
-	public static Vector3[] wayPoints;
-	public GameObject[] wayPointGameObjects;
+	public Vector3 center;
+	public GameObject[] wayPoints;
 	public GameObject prefab;
 	public bool landingTriggered;
 	public Material TARGET_MATERIAL;
 
-	Vector3[] calculateWayPoints(int number){
+	private GameObject holder;
+
+	GameObject[] calculateWayPoints(int number){
 		//This is going to be used to calculate the way points for the plane.
 
-		Vector3[] storage = new Vector3[number];
+		GameObject[] storage = new GameObject[number];
 
 		float desiredAngle = 360.0f / number;
 		float desiredAngleRadians = desiredAngle * Mathf.PI / 180;
@@ -27,14 +28,26 @@ public class WayPointGenerator : MonoBehaviour {
 			float wayPointX = radius * Mathf.Cos (desiredAngleRadians*i);
 			float wayPointZ = radius * Mathf.Sin (desiredAngleRadians*i);
 
-			storage [i] = new Vector3 (wayPointX, center.y, wayPointZ);
+
+			GameObject temp = Instantiate(prefab) as GameObject;
+
+			if (!GameConstants.DEBUGGING) {
+				temp.GetComponent<MeshRenderer> ().enabled = false;
+			}
+
+
+			temp.transform.position = new Vector3 (wayPointX, center.y, wayPointZ);
+			temp.transform.parent = holder.transform;
+
+			storage [i] = temp;
 
 		}
+
 
 		return storage;
 	}
 
-	List<int> findClosestNodes (Vector3[] points)
+	List<int> findClosestNodes (GameObject[] objects)
 	{
 		GameObject runway = GameObject.Find ("Runway");
 		BoxCollider[] ends = runway.GetComponentsInChildren<BoxCollider> ();
@@ -48,7 +61,7 @@ public class WayPointGenerator : MonoBehaviour {
 			float closestDistance = float.MaxValue;
 
 			for (int j = 0; j < wayPoints.Length; j++) {
-				float distance = Vector3.Distance (boxPosition, wayPoints [j]);
+				float distance = Vector3.Distance (boxPosition, objects[j].gameObject.transform.position);
 				if ( distance < closestDistance) {
 					closestDistance = distance;
 					closestNode = j;
@@ -61,30 +74,19 @@ public class WayPointGenerator : MonoBehaviour {
 		return closestNodes;
 
 	}
-
-
+		
+	public GameObject[] getWayPoints(){
+		return wayPoints;
+	}
 
 	// Use this for initialization
 	void Start () {
 
-		GameObject holder = new GameObject ();
+		holder = new GameObject ();
 		holder.name = "Way Point Holder";
 
 		center = new Vector3 (0, 100, 0);
-
-
 		wayPoints = calculateWayPoints (numberOfPoints);
-
-		wayPointGameObjects = new GameObject[wayPoints.Length];
-
-		for (int j = 0; j < wayPoints.Length; j++) {
-			GameObject temp = Instantiate (prefab) as GameObject;
-			temp.transform.position = wayPoints [j];
-			temp.transform.parent = holder.transform;
-			wayPointGameObjects [j] = temp;
-		}
-
-
 
 	}
 		
@@ -96,7 +98,7 @@ public class WayPointGenerator : MonoBehaviour {
 			List<int> closestWaypoints = findClosestNodes (wayPoints);
 
 			foreach (int i in closestWaypoints) {
-				wayPointGameObjects [i].gameObject.GetComponent<MeshRenderer> ().material = TARGET_MATERIAL;
+				wayPoints [i].gameObject.GetComponent<MeshRenderer> ().material = TARGET_MATERIAL;
 			}
 		}
 	
