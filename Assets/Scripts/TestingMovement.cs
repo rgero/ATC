@@ -9,6 +9,9 @@ public class TestingMovement : MonoBehaviour {
 	public int speedOffset = 20;
 	public float rotationDamping = 6.0f;
 	public bool smoothFlight;
+	public bool landingRequested;
+	public bool permissionToLand;
+	public bool landed = false;
 
 	public GameObject parent;
 
@@ -35,18 +38,37 @@ public class TestingMovement : MonoBehaviour {
 
 		GameObject nextWaypoint = waypoints [next];
 
-		if (smoothFlight) {
-			var rotation = Quaternion.LookRotation (nextWaypoint.transform.position - this.transform.position);
-			transform.rotation = Quaternion.Slerp (this.transform.rotation, rotation, Time.deltaTime * rotationDamping);
+		if (!landed) {
+			if (smoothFlight) {
+				var rotation = Quaternion.LookRotation (nextWaypoint.transform.position - this.transform.position);
+				transform.rotation = Quaternion.Slerp (this.transform.rotation, rotation, Time.deltaTime * rotationDamping);
+			}
+			this.transform.Translate (0, 0, Time.deltaTime * speedOffset);
 		}
-		this.transform.Translate (0, 0, Time.deltaTime * speedOffset);
+
+		if (landingRequested) {
+			if (permissionToLand) {
+				waypoints = generator.routeToLand (next, waypoints);
+			} else {
+				permissionToLand = generator.requestPermission ();
+			}
+		}
 
 	}
 
 	void OnTriggerEnter(Collider c){
-		next += 1;
-		if (next == waypoints.Length) {
-			next = 0;
+		if (!c.CompareTag ("Terrain")) {
+			next += 1;
+			if (next == waypoints.Length) {
+				if (!permissionToLand) {
+					next = 0;
+				} else {
+					landed = true;
+				}
+			}
+		} else {
+			Debug.Log ("CRASH");
+
 		}
 	}
 }

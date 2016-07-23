@@ -12,6 +12,8 @@ public class WayPointGenerator : MonoBehaviour {
 	public bool landingTriggered;
 	public Material TARGET_MATERIAL;
 
+	private BoxCollider[] ends;
+
 	private GameObject holder;
 
 	GameObject[] calculateWayPoints(int number){
@@ -48,10 +50,10 @@ public class WayPointGenerator : MonoBehaviour {
 		return storage;
 	}
 
-	List<int> findClosestNodes (GameObject[] objects)
+	List<int> findClosestNodes (GameObject[] planePath)
 	{
 		GameObject runway = GameObject.Find ("Runway");
-		BoxCollider[] ends = runway.GetComponentsInChildren<BoxCollider> ();
+		ends = runway.GetComponentsInChildren<BoxCollider> ();
 		int closestNode = int.MinValue;
 
 		List<int> closestNodes = new List<int> ();
@@ -62,7 +64,7 @@ public class WayPointGenerator : MonoBehaviour {
 			float closestDistance = float.MaxValue;
 
 			for (int j = 0; j < wayPoints.Length; j++) {
-				float distance = Vector3.Distance (boxPosition, objects[j].gameObject.transform.position);
+				float distance = Vector3.Distance (boxPosition, planePath[j].gameObject.transform.position);
 				if ( distance < closestDistance) {
 					closestDistance = distance;
 					closestNode = j;
@@ -88,6 +90,27 @@ public class WayPointGenerator : MonoBehaviour {
 
 		center = new Vector3 (0, 100, 0);
 		wayPoints = calculateWayPoints (numberOfPoints);
+
+	}
+
+	public bool requestPermission(){
+		//TODO: Figure out how to handle this
+		Debug.Log("Permission Granted");
+		return true;
+	}
+
+	public GameObject[] routeToLand(int next, GameObject[] planeWaypoints){
+		List<int> closest = findClosestNodes (planeWaypoints);
+		int delta = closest[0] - next;
+		GameObject[] newPoints = new GameObject[delta+1];
+		for (int i = 0; i < delta; i++) {
+			newPoints [i] = wayPoints [next + i];
+		}
+		newPoints [delta] = Instantiate (prefab) as GameObject;
+		newPoints [delta].transform.position = ends [0].transform.position;
+
+		return newPoints;
+
 
 	}
 		
