@@ -37,6 +37,7 @@ public class WayPointGenerator : MonoBehaviour {
 
 
 			temp.transform.position = new Vector3 (wayPointX, center.y, wayPointZ);
+			temp.name = i.ToString ();
 			temp.transform.parent = holder.transform;
 
 			storage [i] = temp;

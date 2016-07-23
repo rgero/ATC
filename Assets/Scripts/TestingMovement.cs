@@ -10,7 +10,9 @@ public class TestingMovement : MonoBehaviour {
 	public float rotationDamping = 6.0f;
 	public bool smoothFlight;
 
-	private GameObject[] waypoints;
+	public GameObject parent;
+
+	public GameObject[] waypoints;
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +22,8 @@ public class TestingMovement : MonoBehaviour {
 		this.transform.position = generator.wayPoints [0].transform.position;
 
 		waypoints = generator.getWayPoints ();
+		//waypoints = parent.GetComponentsInChildren<GameObject>();
+		this.transform.position = waypoints[0].transform.position;
 
 		smoothFlight = true;
 
@@ -39,9 +43,9 @@ public class TestingMovement : MonoBehaviour {
 
 	}
 
-	void OnTriggerExit(Collider c){
+	void OnTriggerEnter(Collider c){
 		next += 1;
-		if (next == generator.wayPoints.Length) {
+		if (next == waypoints.Length) {
 			next = 0;
 		}
 	}
